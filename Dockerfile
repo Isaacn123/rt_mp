@@ -12,7 +12,7 @@ COPY requirements.txt .
 # Upgrade pip first, then install requirements
 # RUN pip install --upgrade pip && \
 #     pip install --no-cache-dir -r requirements.txt
-RUN pip install pip==23.3.1 && \
+RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
