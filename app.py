@@ -228,7 +228,7 @@ def main():
                 if st.sidebar.button(f"📁 {config['name']}"):
                     st.session_state.loaded_config = config
                     # Auto-fill form with loaded config
-                    st.experimental_rerun()
+                    st.rerun()
         else:
             st.sidebar.info("No saved configurations")
     

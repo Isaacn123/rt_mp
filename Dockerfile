@@ -2,9 +2,8 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    && rm -rf /var/lib/apt/lists/*
+# Install system dependencies (bash is included in python:3.13-slim)
+# No additional packages needed for this application
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
@@ -23,17 +22,16 @@ COPY cli_app.py .
 RUN mkdir -p /app/configs
 
 # Expose port for Streamlit
-EXPOSE 8501
+EXPOSE 8509
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8501/')"
+# Note: Healthcheck is defined in docker-compose.yml for web service only
+# CLI service doesn't need healthcheck
 
 # Create a startup script
 RUN echo '#!/bin/bash\n\
 if [ "$MODE" = "web" ]; then\n\
     echo "Starting Web UI..."\n\
-    streamlit run app.py --server.port=8501 --server.address=0.0.0.0\n\
+    streamlit run app.py --server.port=8509 --server.address=0.0.0.0\n\
 else\n\
     echo "Starting CLI Version..."\n\
     python cli_app.py\n\
