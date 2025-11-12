@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  rtmp-generator-web:
+    build: .
+    container_name: rtmp-generator-web
+    ports:
+      - "8501:8501"
+    environment:
+      - MODE=web
+    volumes:
+      - ./configs:/app/configs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8501/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  rtmp-generator-cli:
+    build: .
+    container_name: rtmp-generator-cli
+    environment:
+      - MODE=cli
+    volumes:
+      - ./configs:/app/configs
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
