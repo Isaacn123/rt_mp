@@ -8,7 +8,12 @@ RUN apt-get update && apt-get install -y \
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+
+# Upgrade pip first, then install requirements
+# RUN pip install --upgrade pip && \
+#     pip install --no-cache-dir -r requirements.txt
+RUN pip install pip==23.3.1 && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY app.py .
